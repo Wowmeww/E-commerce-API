@@ -106,8 +106,8 @@ tests/
 ### 1. Clone & install dependencies
 
 ```bash
-git clone https://github.com/your-org/laravel-auth-api.git
-cd laravel-auth-api
+git clone https://github.com/Wowmeww/Laravel-REST-API-Auth-Starter-Kit
+cd Laravel-REST-API-Auth-Starter-Kit
 composer install
 ```
 
