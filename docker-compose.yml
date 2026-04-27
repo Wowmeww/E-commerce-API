@@ -1,49 +1,33 @@
-version: "3.9"
-
 services:
-    api:
-        image: laravel-api-app:latest
-        container_name: laravel-api-app
-        depends_on:
-            mysql:
-                condition: service_healthy
-        restart: always
+    app:
         build:
             context: .
-            dockerfile: Dockerfile
+        container_name: ${DOCKER_CONTAINER_NAME}
         working_dir: /var/www/html
         ports:
-            - "8000:80"
+            - "8001:80"
+        volumes:
+            - .:/var/www/html
+            - .env:/var/www/html/.env
         environment:
-            DB_CONNECTION: mysql
+            APP_ENV: local
             DB_HOST: mysql
-            DB_PORT: 3306
             DB_DATABASE: ${DB_DATABASE}
             DB_USERNAME: ${DB_USERNAME}
             DB_PASSWORD: ${DB_PASSWORD}
-        volumes:
-            - .:/var/www/html
-        command: php -S 0.0.0.0:80 -t public
+        depends_on:
+            - mysql
 
     mysql:
         image: mysql:8.0
+        container_name: ${DOCKER_CONTAINER_NAME}-mysql
         restart: always
         environment:
             MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
             MYSQL_DATABASE: ${DB_DATABASE}
-        ports:
-            - "3307:3306"
         volumes:
             - mysql_data:/var/lib/mysql
-        healthcheck:
-            test:
-                [
-                    "CMD-SHELL",
-                    "mysqladmin ping -h localhost -p$MYSQL_ROOT_PASSWORD",
-                ]
-            interval: 5s
-            timeout: 5s
-            retries: 5
+        command: --default-authentication-plugin=mysql_native_password
 
 volumes:
     mysql_data:

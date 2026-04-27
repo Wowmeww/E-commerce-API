@@ -232,30 +232,31 @@ This starts three services:
 
 | Service | Description       | Port   |
 | ------- | ----------------- | ------ |
-| `app`   | PHP 8.3 + Laravel | `8000` |
+| `app`   | PHP 8.3 + Laravel | `8001` |
 | `mysql` | MySQL 8.0         | `3306` |
 
 #### 4. Generate key & run migrations
 
 ```bash
-docker compose exec app php artisan key:generate
-docker compose exec app php artisan migrate
+docker exec laravel-api-app php artisan key:generate
+docker exec laravel-api-app php artisan migrate
 ```
 
-✅ API is now available at **`http://localhost:8000/api`**
-✅ Mail UI is available at **`http://localhost:8025`** (catches all outgoing email locally)
+✅ API is now available at **`http://localhost:8001/api`**
+
+<!-- ✅ Mail UI is available at **`http://localhost:8025`** (catches all outgoing email locally) -->
 
 #### Useful Docker commands
 
 ```bash
-# View logs
-docker compose logs -f app
+# Fetch and follow the logs of a container:
+docker logs -f <container_name>
 
 # Run tests inside container
-docker compose exec app php artisan test
+docker exec <container_name> php artisan test
 
-# Open a shell inside the app container
-docker compose exec app bash
+# Open a shell inside a running container:
+docker exec -it <container_name> bash # or sh
 
 # Stop all containers
 docker compose down

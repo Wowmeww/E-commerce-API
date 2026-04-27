@@ -2,20 +2,8 @@ FROM php:8.4-apache
 
 # Install system dependencies
 RUN apt-get update && apt-get install -y \
-    libpng-dev \
-    libzip-dev \
-    libonig-dev \
-    unzip \
-    git \
-    zip \
-    curl \
-    && docker-php-ext-install \
-        pdo \
-        pdo_mysql \
-        mbstring \
-        bcmath \
-        zip \
-        gd
+    git zip unzip curl libpng-dev libzip-dev libonig-dev \
+    && docker-php-ext-install pdo pdo_mysql mbstring bcmath zip gd
 
 # Enable Apache rewrite
 RUN a2enmod rewrite
