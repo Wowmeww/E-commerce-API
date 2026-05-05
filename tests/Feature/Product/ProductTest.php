@@ -12,11 +12,25 @@ test('user can view products', function () {
 
     $response
         ->assertJsonStructure([
-            'data',
+            'success',
             'message',
-            'status'
+            'data'
         ])
         ->assertOk();
 });
 
+test('user can view a product', function () {
+
+    $product = Product::factory()->create();
+
+    $response = $this->get(route('product.show', $product));
+
+    $response
+        ->assertJsonStructure([
+            'success',
+            'message',
+            'data'
+        ])
+        ->assertOk();
+});
 

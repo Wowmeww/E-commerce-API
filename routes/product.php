@@ -5,7 +5,15 @@ use Illuminate\Support\Facades\Route;
 
 // needs auth
 Route::apiResource('product', ProductController::class)
-    ->except('index')
+    ->only([
+        'store',
+        'update',
+        'destroy'
+    ])
     ->middleware('auth:sanctum');
+
 Route::apiResource('product', ProductController::class)
-    ->only('index');
+    ->only([
+        'index',
+        'show'
+    ]);

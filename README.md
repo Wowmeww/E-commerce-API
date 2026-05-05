@@ -16,7 +16,7 @@ A production-ready E-commerce API built with Laravel.
     - User
     - Product
     - Category
-    - Cart $ Cart Item
+    - Cart & Cart Item
     - Order
     - Payment
 
