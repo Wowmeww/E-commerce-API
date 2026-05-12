@@ -22,8 +22,7 @@ class ProductFactory extends Factory
         $name = fake()->realText(30);
         return [
             'name' => $name,
-            // 'slug' => Str::slug($name),
-            'slug' => $name,
+            'slug' => Str::slug($name),
             'short_description' => fake()->realText(60),
             'description' => fake()->realText(),
             'price' => 1000,
