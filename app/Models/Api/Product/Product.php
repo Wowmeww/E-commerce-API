@@ -9,4 +9,6 @@ class Product extends Model
 {
     /** @use HasFactory<\Database\Factories\Api\Product\ProductFactory> */
     use HasFactory;
+
+    protected $guarded = [];
 }
