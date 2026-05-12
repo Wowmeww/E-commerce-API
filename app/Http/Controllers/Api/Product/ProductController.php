@@ -24,4 +24,6 @@ class ProductController extends Controller
 
         return ApiResponse::success(data: $product);
     }
+
+
 }
