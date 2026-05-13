@@ -45,4 +45,13 @@ class ProductController extends Controller
             message: 'Product updated successfully.'
         );
     }
+
+    public function destroy(Product $product)
+    {
+        $product->delete();
+
+        return ApiResponse::success(
+            message: 'Product deleted successfully.'
+        );
+    }
 }
