@@ -1,9 +1,9 @@
 <?php
 
 use App\Models\Api\Product\Category;
-use App\Models\Api\Product\Product;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+
 use function Pest\Laravel\assertDatabaseHas;
 
 pest()->use(RefreshDatabase::class);

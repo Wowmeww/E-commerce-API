@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\Product;
 use App\Helpers\ApiResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreProductRequest;
+use App\Http\Requests\UpdateProductRequest;
 use App\Models\Api\Product\Product;
 use Illuminate\Http\Request;
 
@@ -35,5 +36,13 @@ class ProductController extends Controller
         return ApiResponse::success(data: $product);
     }
 
+    public function update(UpdateProductRequest $request, Product $product)
+    {
+        $product->update($request->validated());
 
+        return ApiResponse::success(
+            data: $product->fresh(),
+            message: 'Product updated successfully.'
+        );
+    }
 }
