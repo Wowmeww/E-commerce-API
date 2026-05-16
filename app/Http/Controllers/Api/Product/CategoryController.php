@@ -38,7 +38,9 @@ class CategoryController extends Controller
      */
     public function show(Category $category)
     {
-        //
+        return ApiResponse::success(
+            data: $category
+        );
     }
 
     /**
