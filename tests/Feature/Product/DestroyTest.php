@@ -5,7 +5,6 @@ use App\Models\Api\Product\Product;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
-use function Pest\Laravel\assertDatabaseHas;
 use function Pest\Laravel\assertDatabaseMissing;
 
 pest()->use(RefreshDatabase::class);
