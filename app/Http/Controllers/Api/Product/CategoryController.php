@@ -23,8 +23,6 @@ class CategoryController extends Controller
         );
     }
 
-
-
     /**
      * Store a newly created resource in storage.
      */
@@ -53,7 +51,11 @@ class CategoryController extends Controller
      */
     public function update(UpdateCategoryRequest $request, Category $category)
     {
-        //
+        $category->update($request->validated());
+
+        return ApiResponse::success(
+            data: $category
+        );
     }
 
     /**
@@ -61,6 +63,10 @@ class CategoryController extends Controller
      */
     public function destroy(Category $category)
     {
-        //
+        $category->delete();
+
+        return ApiResponse::success(
+            message: 'Category deleted.'
+        );
     }
 }
