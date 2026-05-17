@@ -30,7 +30,12 @@ class CategoryController extends Controller
      */
     public function store(StoreCategoryRequest $request)
     {
-        //
+        $category = Category::create($request->validated());
+
+        return ApiResponse::success(
+            data: $category,
+            status: 201
+        );
     }
 
     /**
