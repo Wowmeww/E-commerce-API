@@ -2,7 +2,9 @@
 
 namespace Database\Factories\Api\Cart;
 
+use App\Models\Api\Cart\Cart;
 use App\Models\Api\Cart\CartItem;
+use App\Models\Api\Product\Product;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -10,6 +12,8 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  */
 class CartItemFactory extends Factory
 {
+    protected $model = CartItem::class;
+
     /**
      * Define the model's default state.
      *
@@ -17,8 +21,15 @@ class CartItemFactory extends Factory
      */
     public function definition(): array
     {
+        $quantity = fake()->numberBetween(1, 5);
+
         return [
-            //
+            'cart_id' => Cart::factory(),
+            'product_id' => Product::factory(),
+            'quantity' => $quantity,
+            'price' => 1000,
+            'total_price' => 1000 * $quantity,
+            'product_name' => fake()->word(),
         ];
     }
 }

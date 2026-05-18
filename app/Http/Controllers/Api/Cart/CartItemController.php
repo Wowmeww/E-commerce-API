@@ -1,66 +1,98 @@
 <?php
 
-namespace App\Http\Controllers\Cart;
+namespace App\Http\Controllers\Api\Cart;
 
-use App\Http\Requests\StoreCartItemRequest;
-use App\Http\Requests\UpdateCartItemRequest;
+use App\Helpers\ApiResponse;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\Cart\StoreCartItemRequest;
+use App\Http\Requests\Cart\UpdateCartItemRequest;
+use App\Models\Api\Cart\Cart;
 use App\Models\Api\Cart\CartItem;
+use App\Models\Api\Product\Product;
 
 class CartItemController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    public function index(Cart $cart)
     {
-        //
+        $this->authorizeCart($cart);
+
+        return ApiResponse::success(data: $cart->load('items')->items);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function store(StoreCartItemRequest $request, Cart $cart)
     {
-        //
+        $this->authorizeCart($cart);
+
+        $product = Product::findOrFail($request->product_id);
+
+        $cartItem = $cart->items()
+            ->where('product_id', $product->id)
+            ->first();
+
+        if ($cartItem) {
+            $cartItem->quantity += $request->quantity;
+        } else {
+            $cartItem = new CartItem([
+                'product_id' => $product->id,
+                'quantity' => $request->quantity,
+                'price' => $product->price,
+                'product_name' => $product->name,
+            ]);
+        }
+
+        $cartItem->cart_id = $cart->id;
+        $cartItem->price = $product->price;
+        $cartItem->total_price = $cartItem->price * $cartItem->quantity;
+        $cartItem->product_name = $product->name;
+        $cartItem->save();
+
+        return ApiResponse::success(
+            data: $cartItem,
+            message: 'Cart item added successfully.',
+            status: 201
+        );
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(StoreCartItemRequest $request)
+    public function show(Cart $cart, CartItem $item)
     {
-        //
+        $this->authorizeCartItem($cart, $item);
+
+        return ApiResponse::success(data: $item);
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(CartItem $cartItem)
+    public function update(UpdateCartItemRequest $request, Cart $cart, CartItem $item)
     {
-        //
+        $this->authorizeCartItem($cart, $item);
+
+        $item->update([
+            'quantity' => $request->quantity,
+            'total_price' => $item->price * $request->quantity,
+        ]);
+
+        return ApiResponse::success(
+            data: $item->fresh(),
+            message: 'Cart item updated successfully.'
+        );
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(CartItem $cartItem)
+    public function destroy(Cart $cart, CartItem $item)
     {
-        //
+        $this->authorizeCartItem($cart, $item);
+
+        $item->delete();
+
+        return ApiResponse::success(message: 'Cart item removed successfully.');
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdateCartItemRequest $request, CartItem $cartItem)
+    private function authorizeCart(Cart $cart): void
     {
-        //
+        abort_unless($cart->user_id === auth()->id(), 403);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(CartItem $cartItem)
+    private function authorizeCartItem(Cart $cart, CartItem $item): void
     {
-        //
+        $this->authorizeCart($cart);
+
+        abort_unless($item->cart_id === $cart->id, 404);
     }
 }

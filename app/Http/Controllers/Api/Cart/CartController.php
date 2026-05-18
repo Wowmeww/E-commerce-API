@@ -1,66 +1,69 @@
 <?php
 
-namespace App\Http\Controllers\Cart;
+namespace App\Http\Controllers\Api\Cart;
 
-use App\Http\Requests\StoreCartRequest;
-use App\Http\Requests\UpdateCartRequest;
+use App\Helpers\ApiResponse;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\Cart\StoreCartRequest;
+use App\Http\Requests\Cart\UpdateCartRequest;
 use App\Models\Api\Cart\Cart;
+use Illuminate\Http\Request;
 
 class CartController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $carts = Cart::with('items')
+            ->where('user_id', $request->user()->id)
+            ->paginate($request->integer('per_page') ?? 15);
+
+        return ApiResponse::success(data: $carts);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(StoreCartRequest $request)
     {
-        //
+        $cart = Cart::create(array_merge(
+            $request->validated(),
+            ['user_id' => $request->user()->id],
+        ));
+
+        return ApiResponse::success(
+            data: $cart,
+            message: 'Cart created successfully.',
+            status: 201
+        );
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(Cart $cart)
     {
-        //
+        $this->authorizeCart($cart);
+
+        return ApiResponse::success(data: $cart->load('items'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Cart $cart)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(UpdateCartRequest $request, Cart $cart)
     {
-        //
+        $this->authorizeCart($cart);
+
+        $cart->update($request->validated());
+
+        return ApiResponse::success(
+            data: $cart->fresh()->load('items'),
+            message: 'Cart updated successfully.'
+        );
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(Cart $cart)
     {
-        //
+        $this->authorizeCart($cart);
+
+        $cart->delete();
+
+        return ApiResponse::success(message: 'Cart deleted successfully.');
+    }
+
+    private function authorizeCart(Cart $cart): void
+    {
+        abort_unless($cart->user_id === auth()->id(), 403);
     }
 }
