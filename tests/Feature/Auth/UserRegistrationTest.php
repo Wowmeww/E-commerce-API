@@ -1,12 +1,11 @@
 <?php
 
 use App\Models\User;
-use function Pest\Laravel\assertDatabaseHas;
-
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
-pest()->use(RefreshDatabase::class);
+use function Pest\Laravel\assertDatabaseHas;
 
+pest()->use(RefreshDatabase::class);
 
 test('user can register', function () {
     $this->postJson('/api/auth/register', [

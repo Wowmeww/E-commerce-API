@@ -2,10 +2,10 @@
 
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+
 use function Pest\Laravel\assertDatabaseCount;
 
 pest()->use(RefreshDatabase::class);
-
 
 // ─── Login ───────────────────────────────────────────────────────────────────
 
@@ -45,7 +45,6 @@ test('authenticated user can logout', function () {
 
     assertDatabaseCount('personal_access_tokens', 0);
 });
-
 
 // ─── Me ──────────────────────────────────────────────────────────────────────
 

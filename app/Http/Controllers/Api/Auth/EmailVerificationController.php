@@ -12,9 +12,7 @@ use Illuminate\Http\Request;
 #[Group('Auth', weight: 3)]
 class EmailVerificationController extends Controller
 {
-    public function __construct(private readonly EmailVerificationService $emailVerificationService)
-    {
-    }
+    public function __construct(private readonly EmailVerificationService $emailVerificationService) {}
 
     /**
      * Verification -> Verify Email.
@@ -22,11 +20,10 @@ class EmailVerificationController extends Controller
      * **Controller:** `Api/Auth/EmailVerificationController`
      *
      *  Mark the user's email as verified.
-     *
      */
     public function verifyEmail(Request $request, string $id, string $hash): JsonResponse
     {
-        $this->emailVerificationService->verifyEmail((int)$id, $hash, $request);
+        $this->emailVerificationService->verifyEmail((int) $id, $hash, $request);
 
         return ApiResponse::success(message: 'Email verified successfully.');
     }
@@ -37,7 +34,6 @@ class EmailVerificationController extends Controller
      * **Controller:** `Api/Auth/EmailVerificationController`
      *
      *  Resend verification email for an authenticated user.
-     *
      */
     public function resendVerification(Request $request): JsonResponse
     {

@@ -8,7 +8,6 @@ use Illuminate\Support\Facades\Password;
 
 pest()->use(RefreshDatabase::class);
 
-
 // ─── Forgot Password ─────────────────────────────────────────────────────────
 
 test('forgot password sends reset link', function () {

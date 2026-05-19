@@ -9,10 +9,14 @@ use Illuminate\Support\Facades\Route;
 Route::prefix('auth')->group(function () {
 
     // Public routes
-    Route::post('/register', RegisterUserController::class);
-    Route::post('/login', [AuthenticatedSessionController::class, 'login']);
-    Route::post('/forgot-password', [PasswordController::class, 'forgotPassword']);
-    Route::post('/reset-password', [PasswordController::class, 'resetPassword']);
+    Route::post('/register', RegisterUserController::class)
+        ->middleware('throttle:register');
+    Route::post('/login', [AuthenticatedSessionController::class, 'login'])
+        ->middleware('throttle:login');
+    Route::post('/forgot-password', [PasswordController::class, 'forgotPassword'])
+        ->middleware('throttle:forgot-password');
+    Route::post('/reset-password', [PasswordController::class, 'resetPassword'])
+        ->middleware('throttle:reset-password');
 
     // Email verification (signed URL — no auth token required, but user must be identified)
     Route::get('/email/verify/{id}/{hash}', [EmailVerificationController::class, 'verifyEmail'])
@@ -24,6 +28,6 @@ Route::prefix('auth')->group(function () {
         Route::post('/logout', [AuthenticatedSessionController::class, 'logout']);
         Route::get('/me', [AuthenticatedSessionController::class, 'me']);
         Route::post('/email/verification-notification', [EmailVerificationController::class, 'resendVerification'])
-            ->middleware('throttle:6,1');
+            ->middleware('throttle:email-resend');
     });
 });

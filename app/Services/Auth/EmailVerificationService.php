@@ -16,13 +16,13 @@ class EmailVerificationService
     {
         $user = User::findOrFail($userId);
 
-        if(!hash_equals(sha1($user->getEmailForVerification()), $hash)) {
+        if (! hash_equals(sha1($user->getEmailForVerification()), $hash)) {
             throw ValidationException::withMessages([
                 'email' => ['Invalid verification link.'],
             ]);
         }
 
-        if($user->hasVerifiedEmail()) {
+        if ($user->hasVerifiedEmail()) {
             throw ValidationException::withMessages([
                 'email' => ['Email is already verified.'],
             ]);
@@ -37,7 +37,7 @@ class EmailVerificationService
      */
     public function resendVerificationEmail(User $user): void
     {
-        if($user->hasVerifiedEmail()) {
+        if ($user->hasVerifiedEmail()) {
             throw ValidationException::withMessages([
                 'email' => ['Email is already verified.'],
             ]);

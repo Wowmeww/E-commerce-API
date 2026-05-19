@@ -5,10 +5,8 @@ use Illuminate\Auth\Notifications\VerifyEmail;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\URL;
-use function Pest\Laravel\assertDatabaseHas;
 
 pest()->use(RefreshDatabase::class);
-
 
 // ─── Verify Email ────────────────────────────────────────────────────────────
 
@@ -66,7 +64,6 @@ test('verify email fails when already verified', function () {
     $this->get($verificationUrl)
         ->assertStatus(302);
 });
-
 
 // ─── Resend Verification Email ───────────────────────────────────────────────
 

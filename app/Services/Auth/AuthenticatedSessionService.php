@@ -8,7 +8,6 @@ use Illuminate\Validation\ValidationException;
 
 class AuthenticatedSessionService
 {
-
     /**
      * Authenticate user credentials and issue a token.
      */
@@ -16,7 +15,7 @@ class AuthenticatedSessionService
     {
         $user = User::where('email', $credentials['email'])->first();
 
-        if (!$user || !Hash::check($credentials['password'], $user->password)) {
+        if (! $user || ! Hash::check($credentials['password'], $user->password)) {
             throw ValidationException::withMessages([
                 'email' => ['The provided credentials are incorrect.'],
             ]);

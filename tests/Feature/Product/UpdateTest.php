@@ -87,7 +87,7 @@ test('validation errors when updating product with invalid data', function (arra
     $product = Product::factory()->create(['category_id' => $category->id]);
 
     // Create another product for duplicate slug test
-    if(isset($invalidData['slug']) && $invalidData['slug'] === 'existing-slug') {
+    if (isset($invalidData['slug']) && $invalidData['slug'] === 'existing-slug') {
         Product::factory()->create(['slug' => 'existing-slug', 'category_id' => $category->id]);
     }
 
@@ -98,27 +98,27 @@ test('validation errors when updating product with invalid data', function (arra
         ->assertUnprocessable()
         ->assertJsonValidationErrors($expectedErrors);
 })->with([
-            'empty name' => [
-                ['name' => '', 'slug' => 'test', 'price' => 100, 'category_id' => 1],
-                ['name'],
-            ],
-            'invalid price' => [
-                ['name' => 'Test', 'slug' => 'test', 'price' => 'invalid', 'category_id' => 1],
-                ['price'],
-            ],
-            'duplicate slug' => [
-                ['name' => 'Test', 'slug' => 'existing-slug', 'price' => 100, 'category_id' => 1],
-                ['slug'],
-            ],
-            'non-existent category' => [
-                ['name' => 'Test', 'slug' => 'test', 'price' => 100, 'category_id' => 999],
-                ['category_id'],
-            ],
-            'negative stock' => [
-                ['name' => 'Test', 'slug' => 'test', 'price' => 100, 'category_id' => 1, 'stock_quantity' => -1],
-                ['stock_quantity'],
-            ],
-        ]);
+    'empty name' => [
+        ['name' => '', 'slug' => 'test', 'price' => 100, 'category_id' => 1],
+        ['name'],
+    ],
+    'invalid price' => [
+        ['name' => 'Test', 'slug' => 'test', 'price' => 'invalid', 'category_id' => 1],
+        ['price'],
+    ],
+    'duplicate slug' => [
+        ['name' => 'Test', 'slug' => 'existing-slug', 'price' => 100, 'category_id' => 1],
+        ['slug'],
+    ],
+    'non-existent category' => [
+        ['name' => 'Test', 'slug' => 'test', 'price' => 100, 'category_id' => 999],
+        ['category_id'],
+    ],
+    'negative stock' => [
+        ['name' => 'Test', 'slug' => 'test', 'price' => 100, 'category_id' => 1, 'stock_quantity' => -1],
+        ['stock_quantity'],
+    ],
+]);
 
 test('authenticated user can partially update a product', function () {
     $user = User::factory()->create();

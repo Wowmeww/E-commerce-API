@@ -19,6 +19,7 @@ class CategoryFactory extends Factory
     public function definition(): array
     {
         $name = fake()->realText(30);
+
         return [
             'name' => $name,
             'slug' => Str::slug($name),

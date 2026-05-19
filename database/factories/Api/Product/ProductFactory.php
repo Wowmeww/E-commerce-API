@@ -20,6 +20,7 @@ class ProductFactory extends Factory
     public function definition(): array
     {
         $name = fake()->realText(30);
+
         return [
             'name' => $name,
             'slug' => Str::slug($name),
@@ -29,7 +30,7 @@ class ProductFactory extends Factory
             'sale_price' => 899,
             'cost_price' => 800,
             'stock_quantity' => 100,
-            'category_id' => Category::factory()
+            'category_id' => Category::factory(),
         ];
     }
 }

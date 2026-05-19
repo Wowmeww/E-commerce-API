@@ -45,8 +45,6 @@ test('user can request a custom per page size', function () {
         ->assertJsonCount(10, 'data.data');
 });
 
-
-
 test('product index returns empty data when there are no products', function () {
     $response = $this->getJson(route('product.index'));
 
@@ -55,4 +53,3 @@ test('product index returns empty data when there are no products', function () 
         ->assertJsonPath('data.total', 0)
         ->assertJsonCount(0, 'data.data');
 });
-

@@ -1,3 +1,3 @@
 <?php
 
-test('true is true', fn() => expect(true)->toBeTrue());
+test('true is true', fn () => expect(true)->toBeTrue());

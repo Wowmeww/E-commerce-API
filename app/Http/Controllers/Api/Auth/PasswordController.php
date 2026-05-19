@@ -13,9 +13,7 @@ use Illuminate\Http\JsonResponse;
 #[Group('Auth')]
 class PasswordController extends Controller
 {
-    public function __construct(private readonly PasswordService $passwordService)
-    {
-    }
+    public function __construct(private readonly PasswordService $passwordService) {}
 
     /**
      * Password -> Forgot Password.
@@ -23,7 +21,6 @@ class PasswordController extends Controller
      * **Controller:** `Api/Auth/PasswordController`
      *
      * Send a password reset link to the given email.
-     *
      */
     public function forgotPassword(ForgotPasswordRequest $request): JsonResponse
     {
@@ -32,14 +29,12 @@ class PasswordController extends Controller
         return ApiResponse::success(message: 'Password reset link sent to your email.');
     }
 
-
     /**
      * Password -> Reset Password.
      *
      * **Controller:** `Api/Auth/PasswordController`
      *
      * Reset the user's password using the provided token.
-     *
      */
     public function resetPassword(ResetPasswordRequest $request): JsonResponse
     {

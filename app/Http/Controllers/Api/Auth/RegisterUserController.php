@@ -13,14 +13,12 @@ use Illuminate\Http\JsonResponse;
 #[Group('Auth', weight: 1)]
 class RegisterUserController extends Controller
 {
-
     /**
      * Register.
      *
      * **Controller:** `Api/Auth/RegisterUserController`
      *
      * Register a new user and issue a Sanctum token.
-     *
      */
     public function __invoke(
         RegisterRequest $request,
@@ -32,7 +30,7 @@ class RegisterUserController extends Controller
         return ApiResponse::success(
             data: [
                 'user' => new UserResource($result['user']),
-                'token' => $result['token']
+                'token' => $result['token'],
             ],
             message: 'Registration successful. Please verify your email.',
             status: 201

@@ -14,10 +14,7 @@ use Illuminate\Http\Request;
 #[Group('Auth', weight: 2)]
 class AuthenticatedSessionController extends Controller
 {
-
-    public function __construct(private readonly AuthenticatedSessionService $authService)
-    {
-    }
+    public function __construct(private readonly AuthenticatedSessionService $authService) {}
 
     /**
      * Login.
@@ -25,7 +22,6 @@ class AuthenticatedSessionController extends Controller
      * **Controller:** `Api/Auth/AuthenticatedSessionController`
      *
      * Authenticate user credentials and issue a token. Revoke previous tokens (single-session policy)
-     *
      */
     public function login(LoginRequest $request): JsonResponse
     {
@@ -43,7 +39,6 @@ class AuthenticatedSessionController extends Controller
      * **Controller:** `Api/Auth/AuthenticatedSessionController`
      *
      * Revoke the user's current token.
-     *
      */
     public function logout(Request $request): JsonResponse
     {
@@ -58,9 +53,7 @@ class AuthenticatedSessionController extends Controller
      * **Controller:** `Api/Auth/AuthenticatedSessionController`
      *
      * Get user information
-     *
      */
-
     public function me(Request $request): JsonResponse
     {
         return ApiResponse::success(
