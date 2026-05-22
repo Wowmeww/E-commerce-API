@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Api\Cart;
 
 use App\Helpers\ApiResponse;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Cart\StoreCartRequest;
 use App\Http\Requests\Cart\UpdateCartRequest;
 use App\Models\Api\Cart\Cart;
 use Illuminate\Http\Request;
@@ -18,20 +17,6 @@ class CartController extends Controller
             ->paginate($request->integer('per_page') ?? 15);
 
         return ApiResponse::success(data: $carts);
-    }
-
-    public function store(StoreCartRequest $request)
-    {
-        $cart = Cart::create(array_merge(
-            $request->validated(),
-            ['user_id' => $request->user()->id],
-        ));
-
-        return ApiResponse::success(
-            data: $cart,
-            message: 'Cart created successfully.',
-            status: 201
-        );
     }
 
     public function show(Cart $cart)
