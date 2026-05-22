@@ -6,18 +6,10 @@ use App\Helpers\ApiResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Cart\UpdateCartRequest;
 use App\Models\Api\Cart\Cart;
-use Illuminate\Http\Request;
 
 class CartController extends Controller
 {
-    public function index(Request $request)
-    {
-        $carts = Cart::with('items')
-            ->where('user_id', $request->user()->id)
-            ->paginate($request->integer('per_page') ?? 15);
 
-        return ApiResponse::success(data: $carts);
-    }
 
     public function show(Cart $cart)
     {
@@ -36,15 +28,6 @@ class CartController extends Controller
             data: $cart->fresh()->load('items'),
             message: 'Cart updated successfully.'
         );
-    }
-
-    public function destroy(Cart $cart)
-    {
-        $this->authorizeCart($cart);
-
-        $cart->delete();
-
-        return ApiResponse::success(message: 'Cart deleted successfully.');
     }
 
     private function authorizeCart(Cart $cart): void
